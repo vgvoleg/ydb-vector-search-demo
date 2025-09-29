@@ -256,8 +256,11 @@ class SearchApp {
                 .replace(/'/g, "&#039;");
         };
 
+        // Убираем markdown заголовки из текста
+        const cleanText = this.removeMarkdownHeaders(text);
+
         // Экранируем HTML и заменяем переносы строк на <br>
-        const escapedText = escapeHtml(text);
+        const escapedText = escapeHtml(cleanText);
 
         // Заменяем одиночные \n на <br>, двойные \n\n на параграфы
         const formattedText = escapedText
@@ -270,6 +273,22 @@ class SearchApp {
         }
 
         return formattedText;
+    }
+
+    removeMarkdownHeaders(text) {
+        console.log('Original text:', text);
+
+        // Убираем markdown заголовки разных уровней
+        const cleanedText = text
+            // Убираем заголовки с # в начале строки (пробел после # необязателен)
+            .replace(/^\s*#{1,6}\s*.*$/gm, '')
+            // Убираем пустые строки, которые могли остаться после удаления заголовков
+            .replace(/\n\s*\n\s*\n/g, '\n\n')
+            // Убираем лишние пробелы в начале
+            .trim();
+
+        console.log('Cleaned text:', cleanedText);
+        return cleanedText;
     }
 
     truncateText(text, maxLength) {

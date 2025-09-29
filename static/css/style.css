@@ -40,6 +40,13 @@ body {
     color: #667eea;
 }
 
+.title-logo {
+    width: 2rem;
+    height: 2rem;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+}
+
 .subtitle {
     font-size: 1.1rem;
     font-weight: 300;
