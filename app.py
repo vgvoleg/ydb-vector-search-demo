@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
 import os
 import logging
+import time
 
 # Загружаем переменные окружения
 load_dotenv()
@@ -74,10 +75,12 @@ def generate_summary(query, documents):
     """Генерация саммари с помощью YandexGPT"""
     try:
         if not yandex_gpt or not documents:
+            logger.info("YandexGPT or documents not available for summary generation")
             return None
 
         # Объединяем содержимое документов
         context = "\n\n".join([doc.page_content for doc in documents[:3]])  # Берем только первые 3 документа
+        logger.info(f"Generating summary for {len(documents[:3])} documents, context length: {len(context)} chars")
 
         # Создаем промпт для генерации саммари
         prompt = f"""На основе следующих документов ответь на вопрос: "{query}"
@@ -88,7 +91,9 @@ def generate_summary(query, documents):
 Дай краткий и информативный ответ на русском языке, основываясь только на предоставленной информации. Если информации недостаточно для ответа, укажи это."""
 
         # Генерируем ответ
+        logger.info("Sending request to YandexGPT...")
         response = yandex_gpt.invoke(prompt)
+        logger.info(f"YandexGPT response received, length: {len(response)} chars")
         return response.strip()
 
     except Exception as e:
@@ -109,7 +114,10 @@ def search():
             return jsonify({'error': 'Векторное хранилище недоступно'}), 500
 
         # Выполняем поиск по сходству с оценками
+        search_start_time = time.time()
         results = vector_store.similarity_search_with_score(query, k=5)
+        search_end_time = time.time()
+        search_duration = search_end_time - search_start_time
 
         # Форматируем результаты
         formatted_results = []
@@ -125,17 +133,29 @@ def search():
 
         # Генерируем саммари с помощью YandexGPT
         summary = None
+        gpt_duration = 0
         if results:
             # Извлекаем только документы для саммари (без score)
             docs_only = [doc for doc, score in results]
+            gpt_start_time = time.time()
             summary = generate_summary(query, docs_only)
+            gpt_end_time = time.time()
+            gpt_duration = gpt_end_time - gpt_start_time
+
+        # Логируем время выполнения
+        logger.info(f"Search performance - Query: '{query}' | Vector search: {search_duration:.3f}s | YandexGPT: {gpt_duration:.3f}s | Total: {search_duration + gpt_duration:.3f}s")
 
         return jsonify({
             'success': True,
             'query': query,
             'results': formatted_results,
             'count': len(formatted_results),
-            'summary': summary
+            'summary': summary,
+            'performance': {
+                'search_time': round(search_duration, 3),
+                'gpt_time': round(gpt_duration, 3),
+                'total_time': round(search_duration + gpt_duration, 3)
+            }
         })
 
     except Exception as e:

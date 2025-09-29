@@ -98,6 +98,8 @@ class SearchApp {
                 this.displayResults(data);
                 // Показываем кнопку "Поделиться" после успешного поиска
                 this.shareButton.classList.remove('hidden');
+                // Выводим информацию о производительности
+                this.logPerformance(data.performance, query);
             } else {
                 throw new Error(data.error || 'Неизвестная ошибка');
             }
@@ -459,6 +461,25 @@ class SearchApp {
         setTimeout(() => {
             this.shareNotification.classList.add('hidden');
         }, 2000);
+    }
+
+    logPerformance(performance, query) {
+        if (!performance) return;
+
+        console.group(`🔍 Search Performance: "${query}"`);
+        console.log(`📊 Vector Search: ${performance.search_time}s`);
+        console.log(`🤖 YandexGPT: ${performance.gpt_time}s`);
+        console.log(`⏱️ Total Time: ${performance.total_time}s`);
+
+        // Анализ производительности
+        const searchPercent = ((performance.search_time / performance.total_time) * 100).toFixed(1);
+        const gptPercent = ((performance.gpt_time / performance.total_time) * 100).toFixed(1);
+
+        console.log(`📈 Time Distribution:`);
+        console.log(`   Vector Search: ${searchPercent}%`);
+        console.log(`   YandexGPT: ${gptPercent}%`);
+
+        console.groupEnd();
     }
 
     disableSearch() {
