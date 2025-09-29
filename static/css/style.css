@@ -1,0 +1,570 @@
+/* Сброс стилей и базовые настройки */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: #ffffff;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Заголовок */
+.header {
+    text-align: center;
+    margin-bottom: 3rem;
+    color: #333;
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.title i {
+    margin-right: 0.5rem;
+    color: #667eea;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    font-weight: 300;
+    opacity: 0.7;
+    color: #666;
+}
+
+/* Основной контент */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Секция поиска */
+.search-section {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 2rem;
+    border: 1px solid #e9ecef;
+}
+
+.search-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.search-input-wrapper {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.search-input {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #667eea;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.search-button {
+    padding: 1rem 2rem;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 120px;
+    justify-content: center;
+}
+
+.search-button:hover {
+    background: #5a6fd8;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.search-button:active {
+    transform: translateY(0);
+}
+
+.search-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.share-button {
+    padding: 1rem;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 50px;
+}
+
+.share-button:hover {
+    background: #218838;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+}
+
+.share-button:active {
+    transform: translateY(0);
+}
+
+.search-info {
+    text-align: center;
+    position: relative;
+}
+
+.search-hint {
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.search-hint i {
+    color: #667eea;
+}
+
+.share-notification {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #28a745;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+    z-index: 1000;
+    margin-top: 0.5rem;
+    animation: slideInUp 0.3s ease;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* Секция результатов */
+.results-section {
+    flex: 1;
+}
+
+/* Спиннер загрузки */
+.loading-spinner {
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #e9ecef;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Контейнер результатов */
+.results-container {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    border: 1px solid #e9ecef;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Секция саммари */
+.summary-section {
+    background: linear-gradient(135deg, #f8f9ff 0%, #e8f2ff 100%);
+    border: 1px solid #d1e7ff;
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.summary-header {
+    margin-bottom: 1rem;
+}
+
+.summary-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #2c5aa0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.summary-title i {
+    color: #667eea;
+}
+
+.summary-content {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #374151;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.summary-content p {
+    margin-bottom: 1rem;
+}
+
+.summary-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* Секция результатов поиска */
+.search-results-section {
+    /* Стили остаются прежними */
+}
+
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f8f9fa;
+}
+
+.results-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.results-title i {
+    color: #667eea;
+}
+
+.results-count {
+    background: #667eea;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 16px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Список результатов */
+.results-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.result-item {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.result-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-color: #667eea;
+}
+
+
+
+.result-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+}
+
+.result-breadcrumbs {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    line-height: 1.4;
+}
+
+.source-link-main {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
+}
+
+.source-link-main:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+    color: white;
+    text-decoration: none;
+}
+
+.source-link-main i {
+    font-size: 0.8rem;
+}
+
+.result-score {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    color: #6c757d;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.result-score i {
+    font-size: 0.7rem;
+    color: #28a745;
+}
+
+.score-value {
+    font-weight: 600;
+    font-family: 'Courier New', monospace;
+}
+
+/* Хлебные крошки */
+.breadcrumb-item {
+    font-size: 0.9rem;
+    color: #495057;
+}
+
+.breadcrumb-h1 {
+    font-weight: 600;
+    color: #2c5aa0;
+}
+
+.breadcrumb-h2 {
+    font-weight: 500;
+    color: #495057;
+}
+
+.breadcrumb-h3 {
+    font-weight: 400;
+    color: #6c757d;
+}
+
+.breadcrumb-link {
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.breadcrumb-link:hover {
+    color: #667eea;
+    text-decoration: none;
+}
+
+.breadcrumb-link i {
+    font-size: 0.7rem;
+    opacity: 0.7;
+}
+
+.breadcrumb-separator {
+    font-size: 0.7rem;
+    color: #adb5bd;
+    margin: 0 0.25rem;
+}
+
+.result-content {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #495057;
+    flex: 1;
+    overflow: hidden;
+}
+
+.result-content p {
+    margin-bottom: 1rem;
+}
+
+.result-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* Сообщения об отсутствии результатов и ошибках */
+.no-results,
+.error-message {
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #e9ecef;
+}
+
+.no-results-icon,
+.error-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #6c757d;
+}
+
+.error-icon {
+    color: #dc3545;
+}
+
+.no-results h3,
+.error-message h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.no-results p,
+.error-message p {
+    color: #6c757d;
+    font-size: 1rem;
+}
+
+/* Футер */
+.footer {
+    text-align: center;
+    margin-top: 2rem;
+    padding: 1rem;
+    color: #666;
+    opacity: 0.8;
+}
+
+.footer i {
+    color: #667eea;
+    margin-right: 0.5rem;
+}
+
+/* Утилитарные классы */
+.hidden {
+    display: none !important;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+
+    .title {
+        font-size: 2rem;
+    }
+
+    .search-input-wrapper {
+        flex-direction: column;
+    }
+
+    .search-button {
+        width: 100%;
+    }
+
+    .results-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+
+    .result-item {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 1.5rem;
+    }
+
+    .search-section,
+    .results-container,
+    .loading-spinner,
+    .no-results,
+    .error-message {
+        padding: 1.5rem;
+        border-radius: 8px;
+    }
+}

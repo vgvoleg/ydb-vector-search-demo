@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поиск по векторному хранилищу YDB</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">
+                <i class="fas fa-search"></i>
+                Поиск по векторному хранилищу
+            </h1>
+            <p class="subtitle">Найдите релевантные документы с помощью семантического поиска</p>
+        </header>
+
+        <main class="main-content">
+            <div class="search-section">
+                <div class="search-container">
+                    <div class="search-input-wrapper">
+                        <input
+                            type="text"
+                            id="searchInput"
+                            class="search-input"
+                            placeholder="Введите ваш запрос..."
+                            autocomplete="off"
+                        >
+                        <button id="searchButton" class="search-button">
+                            <i class="fas fa-search"></i>
+                            <span>Поиск</span>
+                        </button>
+                        <button id="shareButton" class="share-button hidden" title="Скопировать ссылку на этот поиск">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                    </div>
+                    <div class="search-info">
+                        <small class="search-hint">
+                            <i class="fas fa-lightbulb"></i>
+                            Введите запрос и нажмите Enter или кнопку "Поиск"
+                        </small>
+                        <div id="shareNotification" class="share-notification hidden">
+                            <i class="fas fa-check"></i>
+                            Ссылка скопирована!
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-section">
+                <div id="loadingSpinner" class="loading-spinner hidden">
+                    <div class="spinner"></div>
+                    <p>Выполняется поиск...</p>
+                </div>
+
+                <div id="resultsContainer" class="results-container hidden">
+                    <!-- Саммари от YandexGPT -->
+                    <div id="summarySection" class="summary-section hidden">
+                        <div class="summary-header">
+                            <h2 class="summary-title">
+                                <i class="fas fa-robot"></i>
+                                Ответ YandexGPT
+                            </h2>
+                        </div>
+                        <div id="summaryContent" class="summary-content">
+                            <!-- Саммари будет добавлено динамически -->
+                        </div>
+                    </div>
+
+                    <!-- Результаты поиска -->
+                    <div class="search-results-section">
+                        <div class="results-header">
+                            <h2 class="results-title">
+                                <i class="fas fa-search"></i>
+                                Найденные документы
+                            </h2>
+                            <div class="results-count">
+                                <span id="resultsCount">0</span> документов найдено
+                            </div>
+                        </div>
+                        <div id="resultsList" class="results-list">
+                            <!-- Результаты будут добавлены динамически -->
+                        </div>
+                    </div>
+                </div>
+
+                <div id="noResults" class="no-results hidden">
+                    <div class="no-results-icon">
+                        <i class="fas fa-search-minus"></i>
+                    </div>
+                    <h3>Ничего не найдено</h3>
+                    <p>Попробуйте изменить запрос или использовать другие ключевые слова</p>
+                </div>
+
+                <div id="errorMessage" class="error-message hidden">
+                    <div class="error-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3>Произошла ошибка</h3>
+                    <p id="errorText">Не удалось выполнить поиск. Попробуйте еще раз.</p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>
+                <i class="fas fa-database"></i>
+                Powered by YDB Vector Store
+            </p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
