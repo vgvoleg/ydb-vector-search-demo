@@ -324,16 +324,23 @@ class SearchApp {
         }
 
         const breadcrumbParts = [];
+        let lastAnchor = null;
 
-        // Добавляем заголовки в порядке h1 -> h2 -> h3
+        // Добавляем заголовки в порядке h1 -> h2 -> h3 и извлекаем якоря
         if (metadata.h1) {
-            breadcrumbParts.push(metadata.h1);
+            const { text, anchor } = this.extractAnchor(metadata.h1);
+            breadcrumbParts.push(text);
+            if (anchor) lastAnchor = anchor;
         }
         if (metadata.h2) {
-            breadcrumbParts.push(metadata.h2);
+            const { text, anchor } = this.extractAnchor(metadata.h2);
+            breadcrumbParts.push(text);
+            if (anchor) lastAnchor = anchor;
         }
         if (metadata.h3) {
-            breadcrumbParts.push(metadata.h3);
+            const { text, anchor } = this.extractAnchor(metadata.h3);
+            breadcrumbParts.push(text);
+            if (anchor) lastAnchor = anchor;
         }
 
         if (breadcrumbParts.length === 0) {
@@ -346,15 +353,18 @@ class SearchApp {
             ` : null;
         }
 
+        // Добавляем якорь к ссылке, если он есть
+        const finalLink = sourceLink && lastAnchor ? `${sourceLink}#${lastAnchor}` : sourceLink;
+
         // Создаем хлебные крошки
         const breadcrumbsHtml = breadcrumbParts
             .map((part, index) => {
                 const isLast = index === breadcrumbParts.length - 1;
                 const className = `breadcrumb-item breadcrumb-h${index + 1}`;
 
-                if (sourceLink && isLast) {
+                if (finalLink && isLast) {
                     // Последний элемент делаем ссылкой
-                    return `<a href="${sourceLink}" target="_blank" class="${className} breadcrumb-link" title="Открыть источник">
+                    return `<a href="${finalLink}" target="_blank" class="${className} breadcrumb-link" title="Открыть источник">
                         ${this.escapeHtml(part)}
                         <i class="fas fa-external-link-alt"></i>
                     </a>`;
@@ -365,6 +375,23 @@ class SearchApp {
             .join('<i class="fas fa-chevron-right breadcrumb-separator"></i>');
 
         return breadcrumbsHtml;
+    }
+
+    extractAnchor(headerText) {
+        // Извлекаем якорь из заголовка вида "Текст {#anchor}"
+        const anchorMatch = headerText.match(/^(.+?)\s*\{#([^}]+)\}\s*$/);
+
+        if (anchorMatch) {
+            return {
+                text: anchorMatch[1].trim(),
+                anchor: anchorMatch[2]
+            };
+        }
+
+        return {
+            text: headerText,
+            anchor: null
+        };
     }
 
     escapeHtml(text) {
