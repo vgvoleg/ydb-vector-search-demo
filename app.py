@@ -113,9 +113,15 @@ def search():
         if not vector_store:
             return jsonify({'error': 'Векторное хранилище недоступно'}), 500
 
-        # Выполняем поиск по сходству с оценками
+        # Генерируем эмбеддинги для запроса
+        embedding_start_time = time.time()
+        query_embedding = vector_store.embeddings.embed_query(query)
+        embedding_end_time = time.time()
+        embedding_duration = embedding_end_time - embedding_start_time
+
+        # Выполняем поиск по сходству с оценками используя готовый вектор
         search_start_time = time.time()
-        results = vector_store.similarity_search_with_score(query, k=5)
+        results = vector_store.similarity_search_by_vector_with_score(query_embedding, k=5)
         search_end_time = time.time()
         search_duration = search_end_time - search_start_time
 
@@ -143,7 +149,8 @@ def search():
             gpt_duration = gpt_end_time - gpt_start_time
 
         # Логируем время выполнения
-        logger.info(f"Search performance - Query: '{query}' | Vector search: {search_duration:.3f}s | YandexGPT: {gpt_duration:.3f}s | Total: {search_duration + gpt_duration:.3f}s")
+        total_time = embedding_duration + search_duration + gpt_duration
+        logger.info(f"Search performance - Query: '{query}' | Embeddings: {embedding_duration:.3f}s | Vector search: {search_duration:.3f}s | YandexGPT: {gpt_duration:.3f}s | Total: {total_time:.3f}s")
 
         return jsonify({
             'success': True,
@@ -152,9 +159,10 @@ def search():
             'count': len(formatted_results),
             'summary': summary,
             'performance': {
+                'embedding_time': round(embedding_duration, 3),
                 'search_time': round(search_duration, 3),
                 'gpt_time': round(gpt_duration, 3),
-                'total_time': round(search_duration + gpt_duration, 3)
+                'total_time': round(total_time, 3)
             }
         })
 

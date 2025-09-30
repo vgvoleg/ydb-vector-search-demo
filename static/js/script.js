@@ -486,15 +486,18 @@ class SearchApp {
         if (!performance) return;
 
         console.group(`🔍 Search Performance: "${query}"`);
+        console.log(`🧮 Embeddings: ${performance.embedding_time}s`);
         console.log(`📊 Vector Search: ${performance.search_time}s`);
         console.log(`🤖 YandexGPT: ${performance.gpt_time}s`);
         console.log(`⏱️ Total Time: ${performance.total_time}s`);
 
         // Анализ производительности
+        const embeddingPercent = ((performance.embedding_time / performance.total_time) * 100).toFixed(1);
         const searchPercent = ((performance.search_time / performance.total_time) * 100).toFixed(1);
         const gptPercent = ((performance.gpt_time / performance.total_time) * 100).toFixed(1);
 
         console.log(`📈 Time Distribution:`);
+        console.log(`   Embeddings: ${embeddingPercent}%`);
         console.log(`   Vector Search: ${searchPercent}%`);
         console.log(`   YandexGPT: ${gptPercent}%`);
 
