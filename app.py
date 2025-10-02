@@ -23,7 +23,6 @@ logger = logging.getLogger(__name__)
 # Инициализация векторного хранилища
 def init_vector_store():
     try:
-        import ydb.iam
         yc_folder_id = os.getenv('YC_FOLDER_ID')
         embeddings = YandexGPTEmbeddings(folder_id=yc_folder_id)
 
@@ -37,7 +36,9 @@ def init_vector_store():
                 table="langchain_ydb_market",
                 index_enabled=False,
             ),
-            credentials=ydb.iam.MetadataUrlCredentials(),
+            credentials={
+                "token": os.getenv('YDB_TOKEN')
+            },
         )
         logger.info("Vector store initialized successfully")
         return vector_store
